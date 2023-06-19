@@ -1,5 +1,7 @@
-﻿public class Industry
+﻿public enum Industry
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
+    Finance,
+    IT,
+    Education,
+    Construction
 }

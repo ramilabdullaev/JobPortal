@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JobPortal.Data.Model.Dto;
+using JobPortal.Data.ViewModel;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Protocol.Core.Types;
 
 namespace JobPortal.Controllers
 {
@@ -6,26 +10,43 @@ namespace JobPortal.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return View(new List<ApplicantDto> { new ApplicantDto { Email = "ba4ioglu", FirstName = "Ivan", LastName = "Ivanov", Job = new Job { Name = "dev" } } });
         }
 
 
-        [HttpGet]
-        public IActionResult GetAllApplicants()
+        public IActionResult ListOfJobs()
         {
+            return View(new List<JobDto> { new JobDto { Category = Category.partTime, Description = "descr", Industry = Industry.IT, Name = "name" } });
+        }
+
+        public ActionResult Create()
+        {
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddJob([FromBody] object jobDto)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(IFormCollection collection)
         {
-            return View();
-        }
+            try
+            {
+                var job = new Job
+                {
+                    Category = Enum.Parse<Category>(collection[nameof(JobVM.Category)]),
+                    Description = collection[nameof(JobVM.Description)],
+                    Industry = Enum.Parse<Industry>(collection[nameof(JobVM.Industry)]),
+                    Name = collection[nameof(JobVM.Name)]
+                };
 
-        [HttpDelete]
-        public IActionResult DeleteJob(int id)
-        {
-            return View();
+                //_repository.SaveJob(job);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }

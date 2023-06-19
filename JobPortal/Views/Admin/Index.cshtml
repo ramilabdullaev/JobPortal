@@ -1,21 +1,59 @@
-﻿@{
+﻿@model IEnumerable<JobPortal.Data.Model.Dto.ApplicantDto>
+
+@{
     ViewData["Title"] = "Admin";
 }
 
-<h1>Admin Portal</h1>
+<h2>List of Applicants</h2>
 
-<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-    <ul class="navbar-nav flex-grow-1">
+<div class=" d-flex justify-content-end">
+    <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="AdminController" asp-action="GetAllApplicants">List of applicants</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="AdminController" asp-action="AddJob">Add new job</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="AdminController" asp-action="DeleteJob">Delete job</a>
+            <a class="nav-link text-black-50 font-weight-bold" asp-area="" asp-controller="Admin" asp-action="ListOfJobs">List of Jobs</a>
         </li>
     </ul>
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Job Name</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>CV</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                @*                @if (!string.IsNullOrEmpty(item.CVPath))
+            {
+            <a href="@item.CVPath" class="btn btn-primary" download>Download</a>
+            }
+            *@
+                @if (string.IsNullOrEmpty(item.CVPath))
+                {
+                    <td>
+                        @Html.ActionLink("Download", "Create")
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
 
 

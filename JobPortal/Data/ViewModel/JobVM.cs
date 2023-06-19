@@ -1,6 +1,6 @@
-﻿namespace JobPortal.Data.Model.Dto
+﻿namespace JobPortal.Data.ViewModel
 {
-    public class JobDto
+    public class JobVM
     {
         public string Name { get; set; }
         public string Description { get; set; }

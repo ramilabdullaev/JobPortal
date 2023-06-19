@@ -8,7 +8,7 @@ namespace JobPortal.Controllers
     {
         public IActionResult Index()
         {
-            return View(new List<JobDto> { new JobDto {  Category = Category.partTime, Description ="descr", Industry = "indus",Name= "name"} });
+            return View(new List<JobDto> { new JobDto {  Category = Category.partTime, Description ="descr", Industry = Industry.IT, Name= "name"} });
         }
 
         public IActionResult Apply(string jobName)
@@ -30,6 +30,5 @@ namespace JobPortal.Controllers
                 return View();
             }
         }
-
     }
 }

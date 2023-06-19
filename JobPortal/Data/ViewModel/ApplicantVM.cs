@@ -7,6 +7,5 @@
         public string Email { get; set; }
         public string JobName { get; set; } 
         public string CVPath { get; set; } 
-
     }
 }
