@@ -1,0 +1,87 @@
+﻿@model IEnumerable<JobPortal.Data.Model.Dto.JobDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@* Add the filter options *@
+<div>
+    <label for="category">Category:</label>
+    <select id="category" name="category">
+        <option value="">All</option>
+        <option value="fulltime">Full Time</option>
+        <option value="parttime">Part Time</option>
+        <option value="internship">Internship</option>
+    </select>
+
+    <label for="industry">Industry:</label>
+    <select id="industry" name="industry">
+        <option value="">All</option>
+        <option value="finance">Finance</option>
+        <option value="it">IT</option>
+        <!-- Add more industry options as needed -->
+    </select>
+
+    <button onclick="applyFilters()">Apply Filters</button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Industry)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Industry)
+                </td>
+                <td>
+                    @Html.ActionLink("Apply", "Apply", new { id=item.Name})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    function applyFilters() {
+        var category = document.getElementById("category").value;
+        var industry = document.getElementById("industry").value;
+
+        var url = "/JobPostings/Index";
+
+        if (category) {
+            url += "?category=" + category;
+        }
+
+        if (industry) {
+            url += (category ? "&" : "?") + "industry=" + industry;
+        }
+
+        window.location.href = url;
+    }
+</script>
+

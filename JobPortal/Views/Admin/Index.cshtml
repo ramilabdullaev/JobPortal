@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Admin";
+}
+
+<h1>Admin Portal</h1>
+
+<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="AdminController" asp-action="GetAllApplicants">List of applicants</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="AdminController" asp-action="AddJob">Add new job</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="AdminController" asp-action="DeleteJob">Delete job</a>
+        </li>
+    </ul>
+</div>
+
+
