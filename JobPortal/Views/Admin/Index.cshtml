@@ -1,4 +1,4 @@
-﻿@model IEnumerable<JobPortal.Data.Model.Dto.ApplicantDto>
+﻿@model IEnumerable<JobPortal.Data.ViewModel.ReadApplicantVM>
 
 @{
     ViewData["Title"] = "Admin";
@@ -29,7 +29,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Job.Name)
+                    @Html.DisplayFor(modelItem => item.JobName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
@@ -45,12 +45,9 @@
             <a href="@item.CVPath" class="btn btn-primary" download>Download</a>
             }
             *@
-                @if (string.IsNullOrEmpty(item.CVPath))
-                {
-                    <td>
-                        @Html.ActionLink("Download", "Create")
-                    </td>
-                }
+                <td>
+                    @Html.ActionLink("Download", "Dowload")
+                </td>
             </tr>
         }
     </tbody>

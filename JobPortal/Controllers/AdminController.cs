@@ -1,16 +1,26 @@
-﻿using JobPortal.Data.Model.Dto;
+﻿using JobPortal.Data.Dto;
 using JobPortal.Data.ViewModel;
+using JobPortal.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using NuGet.Protocol.Core.Types;
 
 namespace JobPortal.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult Index()
+        private readonly IApplicantService _applicantService;
+        private readonly IJobService _jobService;
+
+        public AdminController(IJobService jobService, IApplicantService applicantService)
         {
-            return View(new List<ApplicantDto> { new ApplicantDto { Email = "ba4ioglu", FirstName = "Ivan", LastName = "Ivanov", Job = new Job { Name = "dev" } } });
+            _jobService = jobService;
+            _applicantService = applicantService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var applicants = await _applicantService.GetAll();
+
+            return View(applicants);
         }
 
 
@@ -23,6 +33,12 @@ namespace JobPortal.Controllers
         {
 
             return View();
+        }
+
+        public async Task<IActionResult> Dowload(int applicantId)
+        {
+            var file = await _applicantService.Download(applicantId);
+            return File(file, "application/pdf");
         }
 
         [HttpPost]

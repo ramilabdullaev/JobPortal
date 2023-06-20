@@ -1,7 +1,10 @@
-﻿public interface IJobRepository
+﻿using JobPortal.Data.Dto;
+
+public interface IJobRepository
 {
+    Task<Job> GetById(int id);
     Task<IEnumerable<Job>> GetAll();
-    Task Add(Job job);
-    Task Update(Job job);
-    Task Delete(int jobId);
+    Task Add(JobDto job);
+    Task Update(JobDto job);
+    Task<bool> Delete(int jobId);
 }

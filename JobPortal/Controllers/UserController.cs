@@ -1,34 +1,44 @@
-﻿using JobPortal.Data.Model.Dto;
+﻿using JobPortal.Data.Dto;
 using JobPortal.Data.ViewModel;
+using JobPortal.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobPortal.Controllers
 {
     public class UserController : Controller
     {
-        public IActionResult Index()
+        private readonly IApplicantService _applicantService;
+        private readonly IJobService _jobService;
+
+        public UserController(IApplicantService applicantService, IJobService jobService)
         {
-            return View(new List<JobDto> { new JobDto {  Category = Category.partTime, Description ="descr", Industry = Industry.IT, Name= "name"} });
+            _applicantService = applicantService;
+            _jobService = jobService;
         }
 
-        public IActionResult Apply(string jobName)
+        public async Task<IActionResult> Index()
         {
-            var applicant = new ApplicantVM { JobName = jobName };
+            var jobVMs = await _jobService.GetAll();
+            return View(jobVMs);
+        }
+
+        public IActionResult Apply(int jobId)
+        {
+            var applicant = new CreateApplicantVM { JobId = jobId};
             return View(applicant);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Apply(IFormCollection collection)
+        public ActionResult Apply(CreateApplicantVM applicantVM)
         {
-            try
+            if (!ModelState.IsValid) 
             {
-                return RedirectToAction(nameof(Index));
+                return View(applicantVM);
             }
-            catch
-            {
-                return View();
-            }
+            _applicantService.Create(applicantVM);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

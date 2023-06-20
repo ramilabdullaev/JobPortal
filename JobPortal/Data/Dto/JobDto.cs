@@ -1,4 +1,4 @@
-﻿namespace JobPortal.Data.Model.Dto
+﻿namespace JobPortal.Data.Dto
 {
     public class JobDto
     {
