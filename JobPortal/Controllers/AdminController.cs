@@ -1,5 +1,4 @@
-﻿using JobPortal.Data.Model;
-using JobPortal.Data.ViewModel;
+﻿using JobPortal.Data.ViewModel;
 using JobPortal.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,13 +32,6 @@ namespace JobPortal.Controllers
             return View();
         }
 
-        public  async Task<ActionResult> Update(int id)
-        {
-            var jobVM = await _applicantService.GetById(id);
-            return View(jobVM);
-        }
-
-
         public ActionResult Delete(int id)
         {
             _jobService.Delete(id);
@@ -64,14 +56,5 @@ namespace JobPortal.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Update(JobVM jobVM)
-        //{
-        //    _jobService.Update(jobVM);
-
-        //    return RedirectToAction(nameof(Index));
-        //}
     }
 }

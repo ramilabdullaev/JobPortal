@@ -1,5 +1,4 @@
-﻿using JobPortal.Data.Dto;
-using JobPortal.Data.ViewModel;
+﻿using JobPortal.Data.ViewModel;
 using JobPortal.Services;
 using Microsoft.AspNetCore.Mvc;
 
