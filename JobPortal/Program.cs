@@ -14,8 +14,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IApplicantService, ApplicantService>();
 builder.Services.AddScoped<IJobService, JobService>();
-builder.Services.AddSingleton<IApplicantRepository, ApplicantRepository>();
-builder.Services.AddSingleton<IJobRepository, JobRepository>();
+builder.Services.AddScoped<IApplicantRepository, ApplicantRepository>();
+builder.Services.AddScoped<IJobRepository, JobRepository>();
 
 var app = builder.Build();
 

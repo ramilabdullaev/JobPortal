@@ -1,10 +1,9 @@
-﻿using JobPortal.Data.Dto;
+﻿using JobPortal.Data.Model;
 
 public interface IJobRepository
 {
     Task<Job> GetById(int id);
     Task<IEnumerable<Job>> GetAll();
-    Task Add(JobDto job);
-    Task Update(JobDto job);
+    Task Add(Job job);
     Task<bool> Delete(int jobId);
 }

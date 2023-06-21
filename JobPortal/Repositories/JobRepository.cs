@@ -1,46 +1,46 @@
-﻿using JobPortal.Data.Dto;
+﻿using JobPortal.Data;
+using JobPortal.Data.Model;
+using JobPortal.Data.ViewModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobPortal.Repositories
 {
     public class JobRepository : IJobRepository
     {
-        List<Job> _jobs = new List<Job>
+        private readonly DataContext _context;
+
+        public JobRepository(DataContext context)
         {
-            new Job
+            _context = context;
+        }
+
+        public async Task Add(Job job)
+        {
+             _context.Add(job);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> Delete(int jobId)
+        {
+            var job = _context.Jobs.FirstOrDefault(x => x.Id == jobId);
+            if (job != null) 
             {
-                Category = Category.partTime,
-                Description = "descr",
-                Industry = Industry.IT,
-                Name = "name" ,
-                Id = 1
+                 _context.Jobs.Remove(job);
+                await _context.SaveChangesAsync();
+                return true;
             }
-        };
 
-        public Task Add(JobDto job)
-        {
-            throw new NotImplementedException();
+            return false;
         }
 
-        public Task<bool> Delete(int jobId)
+        public async Task<IEnumerable<Job>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Jobs.ToListAsync();
         }
 
-        public Task<IEnumerable<Job>> GetAll()
+        public async Task<Job> GetById(int id)
         {
-            return Task.FromResult(_jobs.AsEnumerable());
-        }
-
-        public Task<Job> GetById(int id)
-        {
-           var job = _jobs.First(x => x.Id == id);
-
-            return Task.FromResult(job);
-        }
-
-        public Task Update(JobDto job)
-        {
-            throw new NotImplementedException();
+           return await _context.Jobs.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

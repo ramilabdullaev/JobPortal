@@ -1,10 +1,15 @@
-﻿@model IEnumerable<JobPortal.Data.Dto.JobDto>
+﻿@model IEnumerable<JobPortal.Data.ViewModel.JobVM>
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class=" d-flex justify-content-end">
-    <a class="nav-link text-blue " asp-area="" asp-controller="Admin" asp-action="Create">Add new job</a>
+<div class="d-flex justify-content-between mb-3">
+    <div>
+        <a class="nav-link text-blue" asp-area="" asp-controller="Admin" asp-action="Index">Back</a>
+    </div>
+    <div>
+        <a class="nav-link text-blue" asp-area="" asp-controller="Admin" asp-action="Create">Add new job</a>
+    </div>
 </div>
 
 <table class="table">
@@ -42,10 +47,10 @@
                     @Html.DisplayFor(modelItem => item.Industry)
                 </td>
                 <td>
-                    <span style="margin-right: 30px;">
-                        @Html.ActionLink("Edit", "Update")
+@*                    <span style="margin-right: 30px;">
+                        @Html.ActionLink("Edit", "Update", new {id = item.Id})
                     </span>
-                    @Html.ActionLink("Delete", "Delete")
+*@                    @Html.ActionLink("Delete", "Delete", new {id = item.Id})
                 </td>
             </tr>
         }

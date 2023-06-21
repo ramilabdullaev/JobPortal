@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JobPortal.Data.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobPortal.Data
 {

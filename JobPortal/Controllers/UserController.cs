@@ -22,7 +22,7 @@ namespace JobPortal.Controllers
             return View(jobVMs);
         }
 
-        public IActionResult Apply(int jobId)
+        public async Task<IActionResult> Apply(int jobId)
         {
             var applicant = new CreateApplicantVM { JobId = jobId};
             return View(applicant);
@@ -30,13 +30,13 @@ namespace JobPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Apply(CreateApplicantVM applicantVM)
+        public async Task<IActionResult> Apply(CreateApplicantVM applicantVM)
         {
             if (!ModelState.IsValid) 
             {
                 return View(applicantVM);
             }
-            _applicantService.Create(applicantVM);
+            await _applicantService.Create(applicantVM);
 
             return RedirectToAction(nameof(Index));
         }

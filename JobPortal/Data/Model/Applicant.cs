@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using JobPortal.Data.Model;
+using System.ComponentModel.DataAnnotations;
 
 public class Applicant
 {

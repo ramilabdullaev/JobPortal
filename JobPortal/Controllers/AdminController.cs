@@ -1,4 +1,4 @@
-﻿using JobPortal.Data.Dto;
+﻿using JobPortal.Data.Model;
 using JobPortal.Data.ViewModel;
 using JobPortal.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,46 +23,55 @@ namespace JobPortal.Controllers
             return View(applicants);
         }
 
-
-        public IActionResult ListOfJobs()
+        public async Task<IActionResult> ListOfJobs()
         {
-            return View(new List<JobDto> { new JobDto { Category = Category.partTime, Description = "descr", Industry = Industry.IT, Name = "name" } });
+            return View(await _jobService.GetAll());
         }
 
         public ActionResult Create()
         {
-
             return View();
         }
 
-        public async Task<IActionResult> Dowload(int applicantId)
+        public  async Task<ActionResult> Update(int id)
         {
-            var file = await _applicantService.Download(applicantId);
+            var jobVM = await _applicantService.GetById(id);
+            return View(jobVM);
+        }
+
+
+        public ActionResult Delete(int id)
+        {
+            _jobService.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Download(int id)
+        {
+            var file = await _applicantService.Download(id);
             return File(file, "application/pdf");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(JobVM jobVM)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                var job = new Job
-                {
-                    Category = Enum.Parse<Category>(collection[nameof(JobVM.Category)]),
-                    Description = collection[nameof(JobVM.Description)],
-                    Industry = Enum.Parse<Industry>(collection[nameof(JobVM.Industry)]),
-                    Name = collection[nameof(JobVM.Name)]
-                };
-
-                //_repository.SaveJob(job);
-
-                return RedirectToAction(nameof(Index));
+                return View(jobVM);
             }
-            catch
-            {
-                return View();
-            }
+            _jobService.Create(jobVM);
+
+            return RedirectToAction(nameof(Index));
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Update(JobVM jobVM)
+        //{
+        //    _jobService.Update(jobVM);
+
+        //    return RedirectToAction(nameof(Index));
+        //}
     }
 }

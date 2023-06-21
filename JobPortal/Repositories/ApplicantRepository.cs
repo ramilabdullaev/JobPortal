@@ -1,40 +1,57 @@
-﻿using JobPortal.Data.Dto;
-using static System.Reflection.Metadata.BlobBuilder;
+﻿using JobPortal.Data;
+using JobPortal.Data.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobPortal.Repositories
 {
     public class ApplicantRepository : IApplicantRepository
     {
-        List<Applicant> _applicants = new();
+        private readonly DataContext _context;
+        public ApplicantRepository(DataContext context) 
+        { 
+            _context = context;
+        }    
 
-        public Task Add(Applicant applicant)
+        public async Task Add(Applicant applicant)
         {
-            _applicants.Add(applicant);
-            return Task.CompletedTask;
-        }
-
-        public Task<bool> Delete(int applicantId)
-        {
-            var applicant = _applicants.FirstOrDefault(applicant => applicant.Id == applicantId);
-            if (applicant == null)
+            try
             {
-                return Task.FromResult(false);
+             await _context.Applicants.AddAsync(applicant);
+             await _context.SaveChangesAsync();
+
             }
+            catch (Exception )
+            {
 
-            _applicants.Remove(applicant);
-            return Task.FromResult(true);
+                throw;
+            }
         }
 
-        public Task<byte[]> Download(int applicantId)
+        public async Task Delete(int applicantId)
         {
-            var applicant = _applicants.First(x => x.Id == applicantId);
-
-            return Task.FromResult(applicant.CV);
+            var applicant = await _context.Applicants.FirstOrDefaultAsync(applicant => applicant.Id == applicantId);
+            if (applicant != null)
+            {
+                _context.Applicants.Remove(applicant);
+                await _context.SaveChangesAsync() ;
+            }
         }
 
-        public Task<IEnumerable<Applicant>> GetAll()
+        public async Task<byte[]> Download(int applicantId)
         {
-            return Task.FromResult(_applicants.AsEnumerable());
+            var applicant = await _context.Applicants.FirstOrDefaultAsync(x => x.Id == applicantId);
+
+            return applicant.CV;
+        }
+
+        public async Task<IEnumerable<Applicant>> GetAll()
+        {
+            return  await _context.Applicants.Include(j => j.Job).ToListAsync();
+        }
+
+        public async Task<Job> GetById(int id)
+        {
+            return await _context.Jobs.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public Task Update(Applicant applicant)

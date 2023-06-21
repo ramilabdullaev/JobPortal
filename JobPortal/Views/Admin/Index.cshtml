@@ -40,13 +40,8 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
-                @*                @if (!string.IsNullOrEmpty(item.CVPath))
-            {
-            <a href="@item.CVPath" class="btn btn-primary" download>Download</a>
-            }
-            *@
                 <td>
-                    @Html.ActionLink("Download", "Dowload")
+                    @Html.ActionLink("Download", "Download", "Admin", new {id = item.ApplicantId},null)
                 </td>
             </tr>
         }

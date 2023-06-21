@@ -1,4 +1,5 @@
-﻿using JobPortal.Data.ViewModel;
+﻿using JobPortal.Data.Model;
+using JobPortal.Data.ViewModel;
 
 namespace JobPortal.Services
 {
@@ -10,6 +11,23 @@ namespace JobPortal.Services
         {
             _jobRepository = jobRepository;
         }
+
+        public async Task Create(JobVM jobVM)
+        {
+            await _jobRepository.Add(new Job
+            {
+                Name = jobVM.Name,
+                Description = jobVM.Description,
+                Category = jobVM.Category,
+                Industry = jobVM.Industry,
+            });
+        }
+
+        public async Task Delete(int jobId)
+        {
+            await _jobRepository.Delete(jobId);
+        }
+
 
         public async Task<IEnumerable<JobVM>> GetAll()
         {
@@ -24,7 +42,10 @@ namespace JobPortal.Services
                 Name = x.Name,
             });
         }
+
+        //public async Task Update(JobVM jobVM)
+        //{
+        //    await _jobRepository.Update(jobVM);
+        //}
     }
 }
-
-

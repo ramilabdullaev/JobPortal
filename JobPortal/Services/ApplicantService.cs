@@ -1,4 +1,5 @@
-﻿using JobPortal.Data.ViewModel;
+﻿using JobPortal.Data.Model;
+using JobPortal.Data.ViewModel;
 
 namespace JobPortal.Services
 {
@@ -15,7 +16,6 @@ namespace JobPortal.Services
         public async Task Create(CreateApplicantVM applicantVM)
         {
             var cv = ReadFully(applicantVM.File.OpenReadStream());
-            var job = await _jobRepository.GetById(applicantVM.JobId);
 
             await _applicantRepository.Add(new Applicant
             {
@@ -23,23 +23,15 @@ namespace JobPortal.Services
                 LastName = applicantVM.LastName,
                 Email = applicantVM.Email,
                 JobId = applicantVM.JobId,
-                Job = job,
+                Job = await _applicantRepository.GetById(applicantVM.JobId),
                 CV = cv
             });
         }
 
-        private static byte[] ReadFully(Stream input)
+        public async Task<JobVM> GetById(int id)
         {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
-            {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
-            }
+            var job = await _jobRepository.GetById(id);
+            return MapToJobVM(job);
         }
 
         public async Task<IEnumerable<ReadApplicantVM>> GetAll()
@@ -58,7 +50,33 @@ namespace JobPortal.Services
 
         public Task<byte[]> Download(int applicantId)
         {
-            return  _applicantRepository.Download(applicantId);
+            return _applicantRepository.Download(applicantId);
+        }
+
+        private static byte[] ReadFully(Stream input)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
+
+        private static JobVM MapToJobVM(Job job)
+        {
+            return new JobVM
+            {
+                Id = job.Id,
+                Category = job.Category,
+                Description = job.Description,
+                Industry = job.Industry,
+                Name = job.Name
+            };
         }
     }
 }
