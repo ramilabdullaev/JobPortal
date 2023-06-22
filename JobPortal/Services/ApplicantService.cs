@@ -53,6 +53,11 @@ namespace JobPortal.Services
             return _applicantRepository.Download(applicantId);
         }
 
+        public async Task DeleteById(int id)
+        {
+            await _applicantRepository.Delete(id);
+        }
+
         private static byte[] ReadFully(Stream input)
         {
             byte[] buffer = new byte[16 * 1024];
@@ -78,5 +83,6 @@ namespace JobPortal.Services
                 Name = job.Name
             };
         }
+
     }
 }

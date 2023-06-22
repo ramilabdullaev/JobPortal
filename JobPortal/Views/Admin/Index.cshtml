@@ -48,7 +48,10 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.ActionLink("Download", "Download", "Admin", new {id = item.ApplicantId},null)
+                    <span style="margin-right: 30px;">
+                        @Html.ActionLink("Download", "Download", "Admin", new {id = item.ApplicantId},null)
+                    </span>
+                    @Html.ActionLink("Delete", "DeleteApplintById", new {id = item.ApplicantId})
                 </td>
             </tr>
         }

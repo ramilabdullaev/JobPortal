@@ -47,10 +47,7 @@
                     @Html.DisplayFor(modelItem => item.Industry)
                 </td>
                 <td>
-@*                    <span style="margin-right: 30px;">
-                        @Html.ActionLink("Edit", "Update", new {id = item.Id})
-                    </span>
-*@                    @Html.ActionLink("Delete", "Delete", new {id = item.Id})
+                    @Html.ActionLink("Delete", "DeleteJobById", new {id = item.Id})
                 </td>
             </tr>
         }

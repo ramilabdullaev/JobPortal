@@ -8,5 +8,6 @@ namespace JobPortal.Services
         Task <IEnumerable<ReadApplicantVM>> GetAll();
         Task<byte[]> Download(int applicantId);
         Task<JobVM> GetById(int id);
+        Task DeleteById(int id);
     }
 }
