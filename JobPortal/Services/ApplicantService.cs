@@ -47,10 +47,7 @@ namespace JobPortal.Services
             });
         }
 
-        public Task<byte[]> Download(int applicantId)
-        {
-            return _applicantRepository.Download(applicantId);
-        }
+        public Task<byte[]> Download(int applicantId) => _applicantRepository.Download(applicantId);
 
         public Task DeleteById(int id) => _applicantRepository.Delete(id);
 

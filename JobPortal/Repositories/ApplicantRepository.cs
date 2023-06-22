@@ -7,10 +7,7 @@ namespace JobPortal.Repositories
     public class ApplicantRepository : IApplicantRepository
     {
         private readonly DataContext _context;
-        public ApplicantRepository(DataContext context)
-        {
-            _context = context;
-        }
+        public ApplicantRepository(DataContext context) => _context = context;
 
         public async Task Add(Applicant applicant)
         {
@@ -36,10 +33,8 @@ namespace JobPortal.Repositories
                 .SingleAsync();
         }
 
-        public async Task<IEnumerable<Applicant>> GetAll()
-        {
-            return  await _context.Applicants.Include(j => j.Job).ToListAsync();
-        }
+        public async Task<IEnumerable<Applicant>> GetAll() 
+            => await _context.Applicants.Include(j => j.Job).ToListAsync();
 
         public async Task<Job> GetById(int id)
         {

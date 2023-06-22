@@ -32,7 +32,7 @@ namespace JobPortal.Controllers
             return View();
         }
 
-        public async Task<IActionResult> DeleteApplintById(int id)
+        public async Task<IActionResult> DeleteApplicantById(int id)
         {
             await _applicantService.DeleteById(id);
             return RedirectToAction(nameof(Index));

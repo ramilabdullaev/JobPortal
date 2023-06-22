@@ -9,10 +9,7 @@ namespace JobPortal.Repositories
     {
         private readonly DataContext _context;
 
-        public JobRepository(DataContext context)
-        {
-            _context = context;
-        }
+        public JobRepository(DataContext context) => _context = context;
 
         public async Task Add(Job job)
         {
@@ -30,15 +27,9 @@ namespace JobPortal.Repositories
             }
         }
 
-        public async Task<IEnumerable<Job>> GetAll()
-        {
-            return await _context.Jobs.ToListAsync();
-        }
+        public async Task<IEnumerable<Job>> GetAll() => await _context.Jobs.ToListAsync();
 
-        public async Task<Job> GetById(int id)
-        {
-            return await _context.Jobs.FirstOrDefaultAsync(x => x.Id == id);
-        }
+        public async Task<Job> GetById(int id) => await _context.Jobs.FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<IEnumerable<JobVM>> GetFiltered(Category category, Industry industry)
         {
