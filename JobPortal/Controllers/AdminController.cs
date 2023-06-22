@@ -40,21 +40,43 @@ namespace JobPortal.Controllers
 
         public async Task<IActionResult> Download(int id)
         {
-            var file = await _applicantService.Download(id);
-            return File(file, "application/pdf");
+            try
+            {
+                var file = await _applicantService.Download(id);
+                if (file == null)
+                {
+                    TempData["ErrorMessage"] = "File not found.";
+                    return RedirectToAction(nameof(Index));
+                }
+                return File(file, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while downloading the file.";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(JobVM jobVM)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(jobVM);
-            }
-            _jobService.Create(jobVM);
+                if (!ModelState.IsValid)
+                {
+                    return View(jobVM);
+                }
+                _jobService.Create(jobVM);
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "An error occurred while creating the job.";
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

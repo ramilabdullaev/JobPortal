@@ -43,9 +43,27 @@ namespace JobPortal.Services
             });
         }
 
-        //public async Task Update(JobVM jobVM)
-        //{
-        //    await _jobRepository.Update(jobVM);
-        //}
+        public async Task<IEnumerable<JobVM>> GetFiltered(string category, string industry)
+        {
+            var jobs = await GetAll();
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                if (Enum.TryParse(category, ignoreCase: true, out Category categoryEnum))
+                {
+                    jobs = jobs.Where(j => j.Category == categoryEnum).ToList();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(industry))
+            {
+                if (Enum.TryParse(industry, ignoreCase: true, out Industry industryEnum))
+                {
+                    jobs = jobs.Where(j => j.Industry == industryEnum).ToList();
+                }
+            }
+
+            return jobs;
+        }
     }
 }

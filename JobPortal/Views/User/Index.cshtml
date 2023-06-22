@@ -4,8 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-@* Add the filter options *@
 <div>
+    <form asp-controller="User" asp-action="Index" method="get">
     <label for="category">Category:</label>
     <select id="category" name="category">
         <option value="">All</option>
@@ -21,10 +21,10 @@
         <option value="it">IT</option>
         <option value="education">Education</option>
         <option value="construction">Construction</option>
-        <!-- Add more industry options as needed -->
     </select>
 
-    <button onclick="applyFilters()">Apply Filters</button>
+    <button type="submit">Apply Filters</button>
+    </form>
 </div>
 
 <table class="table">
@@ -68,22 +68,3 @@
         }
     </tbody>
 </table>
-<script>
-    function applyFilters() {
-        var category = document.getElementById("category").value;
-        var industry = document.getElementById("industry").value;
-
-        var url = "/JobPostings/Index";
-
-        if (category) {
-            url += "?category=" + category;
-        }
-
-        if (industry) {
-            url += (category ? "&" : "?") + "industry=" + industry;
-        }
-
-        window.location.href = url;
-    }
-</script>
-

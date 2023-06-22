@@ -1,7 +1,7 @@
 ﻿public enum Industry
 {
-    Finance,
-    IT,
-    Education,
-    Construction
+    finance,
+    it,
+    education,
+    construction
 }

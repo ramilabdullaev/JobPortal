@@ -15,9 +15,9 @@ namespace JobPortal.Controllers
             _jobService = jobService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string category, string industry)
         {
-            var jobVMs = await _jobService.GetAll();
+            var jobVMs = await _jobService.GetFiltered(category, industry);
             return View(jobVMs);
         }
 
