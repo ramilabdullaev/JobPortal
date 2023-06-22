@@ -16,6 +16,8 @@ public class Applicant
     public string Email { get; set; }
 
     public int JobId { get; set; }
+
     public Job Job{ get; set; }
+
     public byte[] CV{ get; set; }
 }

@@ -15,15 +15,20 @@ namespace JobPortal.Controllers
             _jobService = jobService;
         }
 
-        public async Task<IActionResult> Index(string category, string industry)
+        public async Task<IActionResult> Index(Category category, Industry industry)
         {
-            var jobVMs = await _jobService.GetFiltered(category, industry);
-            return View(jobVMs);
+            if (category != Category.none || industry != Industry.none)
+            {
+                var jobVMs = await _jobService.GetFiltered(category, industry);
+                return View(jobVMs);
+            }
+            var jobs = await _jobService.GetAll();
+            return View(jobs);
         }
 
         public async Task<IActionResult> Apply(int jobId)
         {
-            var applicant = new CreateApplicantVM { JobId = jobId};
+            var applicant = new CreateApplicantVM { JobId = jobId };
             return View(applicant);
         }
 
@@ -31,7 +36,7 @@ namespace JobPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Apply(CreateApplicantVM applicantVM)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return View(applicantVM);
             }

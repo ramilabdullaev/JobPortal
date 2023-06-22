@@ -27,7 +27,7 @@ namespace JobPortal.Controllers
             return View(await _jobService.GetAll());
         }
 
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -65,7 +65,7 @@ namespace JobPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(JobVM jobVM)
+        public async Task<IActionResult> Create(JobVM jobVM)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace JobPortal.Controllers
                 {
                     return View(jobVM);
                 }
-                _jobService.Create(jobVM);
+                await _jobService.Create(jobVM);
 
                 return RedirectToAction(nameof(Index));
 

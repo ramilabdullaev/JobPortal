@@ -7,8 +7,6 @@ namespace JobPortal.Services
         Task<IEnumerable<JobVM>> GetAll();
         Task Create(JobVM jobVM);
         Task Delete(int jobId);
-        Task<IEnumerable<JobVM>> GetFiltered(string category, string industry);
+        Task<IEnumerable<JobVM>> GetFiltered(Category category, Industry industry);
     }
 }
-
-

@@ -23,7 +23,6 @@ namespace JobPortal.Services
                 LastName = applicantVM.LastName,
                 Email = applicantVM.Email,
                 JobId = applicantVM.JobId,
-                Job = await _applicantRepository.GetById(applicantVM.JobId),
                 CV = cv
             });
         }
@@ -53,10 +52,7 @@ namespace JobPortal.Services
             return _applicantRepository.Download(applicantId);
         }
 
-        public async Task DeleteById(int id)
-        {
-            await _applicantRepository.Delete(id);
-        }
+        public Task DeleteById(int id) => _applicantRepository.Delete(id);
 
         private static byte[] ReadFully(Stream input)
         {
@@ -83,6 +79,5 @@ namespace JobPortal.Services
                 Name = job.Name
             };
         }
-
     }
 }

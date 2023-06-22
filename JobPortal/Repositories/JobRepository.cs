@@ -16,21 +16,18 @@ namespace JobPortal.Repositories
 
         public async Task Add(Job job)
         {
-             _context.Add(job);
+            await _context.AddAsync(job);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> Delete(int jobId)
+        public async Task Delete(int jobId)
         {
-            var job = _context.Jobs.FirstOrDefault(x => x.Id == jobId);
-            if (job != null) 
+            var job = await _context.Jobs.FirstOrDefaultAsync(x => x.Id == jobId);
+            if (job != null)
             {
-                 _context.Jobs.Remove(job);
+                _context.Jobs.Remove(job);
                 await _context.SaveChangesAsync();
-                return true;
             }
-
-            return false;
         }
 
         public async Task<IEnumerable<Job>> GetAll()
@@ -40,7 +37,31 @@ namespace JobPortal.Repositories
 
         public async Task<Job> GetById(int id)
         {
-           return await _context.Jobs.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Jobs.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<JobVM>> GetFiltered(Category category, Industry industry)
+        {
+            var jobs = _context.Jobs.AsQueryable();
+
+            if (category != Category.none)
+            {
+                jobs = jobs.Where(j => j.Category == category);
+            }
+
+            if (industry != Industry.none)
+            {
+                jobs = jobs.Where(j => j.Industry == industry);
+            }
+
+            return await jobs.Select(j => new JobVM
+            {
+                Id = j.Id,
+                Category = j.Category,
+                Description = j.Description,
+                Industry = j.Industry,
+                Name = j.Name
+            }).ToListAsync();
         }
     }
 }
