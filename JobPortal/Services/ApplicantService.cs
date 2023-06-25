@@ -13,11 +13,11 @@ namespace JobPortal.Services
             _jobRepository = jobRepository;
         }
 
-        public async Task Create(CreateApplicantVM applicantVM)
+        public Task Create(CreateApplicantVM applicantVM)
         {
             var cv = ReadFully(applicantVM.File.OpenReadStream());
 
-            await _applicantRepository.Add(new Applicant
+            _applicantRepository.Add(new Applicant
             {
                 FirstName = applicantVM.FirstName,
                 LastName = applicantVM.LastName,
@@ -25,6 +25,8 @@ namespace JobPortal.Services
                 JobId = applicantVM.JobId,
                 CV = cv
             });
+
+            return Task.CompletedTask;
         }
 
         public async Task<JobVM> GetById(int id)

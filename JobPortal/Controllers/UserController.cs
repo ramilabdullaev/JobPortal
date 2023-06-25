@@ -1,4 +1,5 @@
-﻿using JobPortal.Data.ViewModel;
+﻿using JobPortal.Data.Paging;
+using JobPortal.Data.ViewModel;
 using JobPortal.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,15 +16,15 @@ namespace JobPortal.Controllers
             _jobService = jobService;
         }
 
-        public async Task<IActionResult> Index(Category category, Industry industry)
+        public async Task<IActionResult> Index(Category category, Industry industry, int? pageNumber)
         {
             if (category != Category.none || industry != Industry.none)
             {
                 var jobVMs = await _jobService.GetFiltered(category, industry);
-                return View(jobVMs);
+                return View(PaginatedList<JobVM>.Create((IQueryable<JobVM>)jobVMs.AsQueryable(), pageNumber ?? 1, 3));
             }
             var jobs = await _jobService.GetAll();
-            return View(jobs);
+            return View(PaginatedList<JobVM>.Create((IQueryable<JobVM>)jobs.AsQueryable(), pageNumber ?? 1, 3));
         }
 
         public async Task<IActionResult> Apply(int jobId)

@@ -36,9 +36,7 @@ namespace JobPortal.Repositories
         public async Task<IEnumerable<Applicant>> GetAll() 
             => await _context.Applicants.Include(j => j.Job).ToListAsync();
 
-        public async Task<Job> GetById(int id)
-        {
-            return  await _context.Jobs.FirstOrDefaultAsync(x => x.Id == id);
-        }
+        public async Task<Job> GetById(int id) 
+            => await _context.Jobs.FirstOrDefaultAsync(x => x.Id == id);
     }
 }
