@@ -16,15 +16,21 @@ namespace JobPortal.Controllers
             _jobService = jobService;
         }
 
-        public async Task<IActionResult> Index(Category category, Industry industry, int? pageNumber)
+        public async Task<IActionResult> Index(Category category, Industry industry, int? pageNumber, string SearchString)
         {
             if (category != Category.none || industry != Industry.none)
             {
                 var jobVMs = await _jobService.GetFiltered(category, industry);
-                return View(PaginatedList<JobVM>.Create((IQueryable<JobVM>)jobVMs.AsQueryable(), pageNumber ?? 1, 3));
+                return View(PaginatedList<JobVM>.Create(jobVMs.AsQueryable(), pageNumber ?? 1, 3));
             }
             var jobs = await _jobService.GetAll();
-            return View(PaginatedList<JobVM>.Create((IQueryable<JobVM>)jobs.AsQueryable(), pageNumber ?? 1, 3));
+
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                jobs = jobs.Where(x => x.Name!.Contains(SearchString));
+
+            }
+            return View(PaginatedList<JobVM>.Create(jobs.AsQueryable(), pageNumber ?? 1, 3));
         }
 
         public async Task<IActionResult> Apply(int jobId)

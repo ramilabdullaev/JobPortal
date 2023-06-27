@@ -7,27 +7,37 @@
     ViewData["Title"] = "Index";
 }
 
-<div>
-    <form asp-controller="User" asp-action="Index" method="get">
-    <label for="category">Category:</label>
-    <select id="category" name="category">
-        <option value="">All</option>
-        <option value="fulltime">Full Time</option>
-        <option value="parttime">Part Time</option>
-        <option value="internship">Internship</option>
-    </select>
+<div class="row">
+    <div class="col-md-8">
+        <form asp-controller="User" asp-action="Index" method="get">
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                <option value="">All</option>
+                <option value="fulltime">Full Time</option>
+                <option value="parttime">Part Time</option>
+                <option value="internship">Internship</option>
+            </select>
 
-    <label for="industry">Industry:</label>
-    <select id="industry" name="industry">
-        <option value="">All</option>
-        <option value="finance">Finance</option>
-        <option value="it">IT</option>
-        <option value="education">Education</option>
-        <option value="construction">Construction</option>
-    </select>
+            <label for="industry">Industry:</label>
+            <select id="industry" name="industry">
+                <option value="">All</option>
+                <option value="finance">Finance</option>
+                <option value="it">IT</option>
+                <option value="education">Education</option>
+                <option value="construction">Construction</option>
+            </select>
 
-    <button type="submit">Apply Filters</button>
-    </form>
+            <button type="submit">Apply Filters</button>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form asp-controller="User" asp-action="Index" method="get">
+            <p>
+                Job name:<input type="text" name="SearchString" />
+                <input type="submit" value="Search" />
+            </p>
+        </form>
+    </div>
 </div>
 
 <table class="table">
