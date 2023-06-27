@@ -44,7 +44,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayName("Name")
+                @Html.ActionLink("Job name", "Index", new{sortByName = ViewBag.NameSortParam})
             </th>
             <th>
                 @Html.DisplayName("Description")

@@ -16,7 +16,7 @@ namespace JobPortal.Controllers
             _jobService = jobService;
         }
 
-        public async Task<IActionResult> Index(Category category, Industry industry, int? pageNumber, string SearchString)
+        public async Task<IActionResult> Index(Category category, Industry industry, int? pageNumber, string SearchString, string sortByName)
         {
             if (category != Category.none || industry != Industry.none)
             {
@@ -30,6 +30,15 @@ namespace JobPortal.Controllers
                 jobs = jobs.Where(x => x.Name!.Contains(SearchString));
 
             }
+
+           ViewBag.NameSortParam = String.IsNullOrEmpty(sortByName) ? "name_desc" : "";
+
+            jobs = sortByName switch
+            {
+                "name_desc" => jobs.OrderByDescending(x => x.Name),
+                _ => jobs.OrderBy(x => x.Name),
+            };
+
             return View(PaginatedList<JobVM>.Create(jobs.AsQueryable(), pageNumber ?? 1, 3));
         }
 

@@ -15,9 +15,20 @@ namespace JobPortal.Controllers
             _applicantService = applicantService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortName)
         {
             var applicants = await _applicantService.GetAll();
+
+            ViewBag.SortByJobName = String.IsNullOrEmpty(sortName) ? "desc_JobName" : "";
+            ViewBag.SortByFirstName = String.IsNullOrEmpty(sortName) ? "desc_FirstName" : "firstName";
+
+            applicants = sortName switch
+            {
+                "desc_JobName" => applicants.OrderByDescending(a => a.JobName),
+                "desc_FirstName" => applicants.OrderByDescending(a => a.FirstName),
+                "firstName" => applicants.OrderBy(a => a.FirstName),
+                _ => applicants.OrderBy(_ => _.JobName)
+            };
 
             return View(applicants);
         }

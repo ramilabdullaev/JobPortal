@@ -24,8 +24,12 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Job Name</th>
-            <th>First Name</th>
+            <th>
+                @Html.ActionLink("Job Name", "Index", new {sortName = ViewBag.SortByJobName})
+            </th>
+            <th>
+                @Html.ActionLink("First Name", "Index", new {sortName = ViewBag.SortByFirstName})
+            </th>
             <th>Last Name</th>
             <th>Email</th>
             <th>CV</th>
