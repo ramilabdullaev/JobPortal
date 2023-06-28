@@ -21,14 +21,14 @@
     </div>
 }
 
-<table class="table">
+<table class="table" id="tbllist">
     <thead>
         <tr>
             <th>
-                @Html.ActionLink("Job Name", "Index", new {sortName = ViewBag.SortByJobName})
+                Job Name
             </th>
             <th>
-                @Html.ActionLink("First Name", "Index", new {sortName = ViewBag.SortByFirstName})
+                First Name
             </th>
             <th>Last Name</th>
             <th>Email</th>
@@ -61,5 +61,15 @@
         }
     </tbody>
 </table>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 
+<script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
+<script type="text/javascript">
+    var js = jQuery.noConflict(true);
+    js(document).ready(function(){
+        js('#tbllist').DataTable({
+        });
+    });
+</script>
