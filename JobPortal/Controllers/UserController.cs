@@ -16,30 +16,18 @@ namespace JobPortal.Controllers
             _jobService = jobService;
         }
 
-        public async Task<IActionResult> Index(Category category, Industry industry, int? pageNumber, string SearchString, string sortByName)
+        public async Task<IActionResult> Index(Category category, Industry industry, int? pageNumber,  string sortByName = "", string searchString = "")
         {
-            if (category != Category.none || industry != Industry.none)
+            var jobVMs = await _jobService.GetAll(category, industry, searchString);
+            ViewBag.NameSortParam = String.IsNullOrEmpty(sortByName) ? "name_desc" : "";
+
+            jobVMs = sortByName switch
             {
-                var jobVMs = await _jobService.GetFiltered(category, industry);
-                return View(PaginatedList<JobVM>.Create(jobVMs.AsQueryable(), pageNumber ?? 1, 3));
-            }
-            var jobs = await _jobService.GetAll();
-
-            if (!String.IsNullOrEmpty(SearchString))
-            {
-                jobs = jobs.Where(x => x.Name!.Contains(SearchString));
-
-            }
-
-           ViewBag.NameSortParam = String.IsNullOrEmpty(sortByName) ? "name_desc" : "";
-
-            jobs = sortByName switch
-            {
-                "name_desc" => jobs.OrderByDescending(x => x.Name),
-                _ => jobs.OrderBy(x => x.Name),
+                "name_desc" => jobVMs.OrderByDescending(x => x.Name),
+                _ => jobVMs.OrderBy(x => x.Name),
             };
 
-            return View(PaginatedList<JobVM>.Create(jobs.AsQueryable(), pageNumber ?? 1, 3));
+            return View(PaginatedList<JobVM>.Create(jobVMs.AsQueryable(), pageNumber ?? 1, 4));
         }
 
         public async Task<IActionResult> Apply(int jobId)

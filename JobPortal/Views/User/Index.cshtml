@@ -2,10 +2,14 @@
 @using JobPortal.Data.ViewModel;
 @model PaginatedList<JobVM>
 
-
 @{
     ViewData["Title"] = "Index";
+    string nameSortParam = Context.Request.Query["sortByName"];
+    string categoryParam = Context.Request.Query["category"];
+    string industryParam = Context.Request.Query["industry"];
+    string searchStringParam = Context.Request.Query["searchString"];
 }
+
 
 <div class="row">
     <div class="col-md-8">
@@ -33,7 +37,7 @@
     <div class="col-md-4">
         <form asp-controller="User" asp-action="Index" method="get">
             <p>
-                Job name:<input type="text" name="SearchString" />
+                Job name:<input type="text" name="searchString" />
                 <input type="submit" value="Search" />
             </p>
         </form>
@@ -82,12 +86,32 @@
     </tbody>
 </table>
 
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
-
-<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex-1)" class="btn btn-alert-primary @prevDisabled">Previous</a>
-<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex+1)" class="btn btn-alert-primary @nextDisabled">Next</a>
-
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            if (i == Model.PageIndex)
+            {
+                <li class="page-item"><a class="page-link" href="@Url.Action("Index", new {pageNumber = i, sortByName = nameSortParam, category = categoryParam, industry = industryParam, searchString = searchStringParam })">@i</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" href="@Url.Action("Index", new {pageNumber = i, sortByName = nameSortParam, category = categoryParam, industry = industryParam, searchString = searchStringParam })">@i</a></li>
+            }
+        }
+        @if (Model.PageIndex < Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@Url.Action("Index", new {pageNumber = Model.PageIndex + 1, sortByName = nameSortParam, category = categoryParam, industry = industryParam, searchString = searchStringParam })" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        }
+    </ul>
+</nav>
 

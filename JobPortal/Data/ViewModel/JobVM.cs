@@ -7,5 +7,6 @@
         public string Description { get; set; }
         public Category Category { get; set; }
         public Industry Industry { get; set; }
+        public string NameSortParam { get; set; }
     }
 }

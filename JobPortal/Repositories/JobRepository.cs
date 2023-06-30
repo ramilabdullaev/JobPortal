@@ -1,6 +1,5 @@
 ﻿using JobPortal.Data;
 using JobPortal.Data.Model;
-using JobPortal.Data.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace JobPortal.Repositories
@@ -27,32 +26,27 @@ namespace JobPortal.Repositories
             }
         }
 
-        public async Task<IEnumerable<Job>> GetAll() => await _context.Jobs.ToListAsync();
-
-        public async Task<Job> GetById(int id) => await _context.Jobs.FirstOrDefaultAsync(x => x.Id == id);
-
-        public async Task<IEnumerable<JobVM>> GetFiltered(Category category, Industry industry)
+        public async Task<IEnumerable<Job>> GetAll(Category category, Industry industry, string searchString)
         {
-            var jobs = _context.Jobs.AsQueryable();
+            searchString = string.IsNullOrEmpty(searchString) ? "" : searchString.ToLower();
 
+            var jobList =  _context.Jobs.Where(x => x.Name.ToLower().StartsWith(searchString));
             if (category != Category.none)
             {
-                jobs = jobs.Where(j => j.Category == category);
+                jobList = jobList.Where(j => j.Category == category);
             }
 
             if (industry != Industry.none)
             {
-                jobs = jobs.Where(j => j.Industry == industry);
+                jobList = jobList.Where(j => j.Industry == industry);
             }
 
-            return await jobs.Select(j => new JobVM
-            {
-                Id = j.Id,
-                Category = j.Category,
-                Description = j.Description,
-                Industry = j.Industry,
-                Name = j.Name
-            }).ToListAsync();
+            return jobList;
         }
+        public async Task<IEnumerable<Job>> GetAll() => await _context.Jobs.ToListAsync();
+
+        public async Task<Job> GetById(int id) 
+            => await _context.Jobs.FirstOrDefaultAsync(x => x.Id == id);
+
     }
 }

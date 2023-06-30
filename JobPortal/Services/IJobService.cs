@@ -5,8 +5,8 @@ namespace JobPortal.Services
     public interface IJobService
     {
         Task<IEnumerable<JobVM>> GetAll();
+        Task<IEnumerable<JobVM>> GetAll(Category category, Industry industry, string searchString = "");
         Task Create(JobVM jobVM);
         Task Delete(int jobId);
-        Task<IEnumerable<JobVM>> GetFiltered(Category category, Industry industry);
     }
 }
