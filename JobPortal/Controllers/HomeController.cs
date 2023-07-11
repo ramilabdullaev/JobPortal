@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JobPortal.Areas.Identity.Pages.Account;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JobPortal.Controllers
 {

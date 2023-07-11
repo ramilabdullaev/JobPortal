@@ -1,9 +1,11 @@
 ﻿using JobPortal.Data.ViewModel;
 using JobPortal.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobPortal.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly IApplicantService _applicantService;

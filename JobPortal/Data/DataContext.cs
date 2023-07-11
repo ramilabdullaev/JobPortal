@@ -7,6 +7,7 @@ namespace JobPortal.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) 
         {
+            Database.EnsureCreated();
         }
 
         public DbSet<Job> Jobs { get; set; }
